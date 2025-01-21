@@ -26,6 +26,7 @@ const start = async (): Promise<void> => {
 
   app.use(express.static(getLeafletDist()))
   app.use(express.static(path.join(__dirname, 'pdfs/')))
+  app.use(express.static(path.join(__dirname, 'public/')))
 
   // This facilitates the connection to the mongo database
   try {

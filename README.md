@@ -14,7 +14,7 @@ npm i adminjs express express-formidable express-session @adminjs/express @admin
 dev dependency
 
 ```shell
-npm install --save-dev ts-node typescript tslib
+npm install --save-dev ts-node typescript tslib nodemon
 ```
 
 
