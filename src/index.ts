@@ -36,12 +36,18 @@ const start = async (): Promise<void> => {
   }
 
   const admin = new AdminJS({
+    rootPath: '/admin',
+    branding: {
+      companyName: 'Company',
+      logo: 'URL_TO_YOUR_LOGO', // Replace with your logo URL
+      withMadeWithLove: false
+    },
     resources: [
       createCustomerResource()
     ],
     componentLoader,
     assets: {
-      styles: ['/leaflet.css']
+      styles: ['/custom.css']
     }
   })
 
