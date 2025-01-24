@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import { getLeafletDist } from '@adminjs/leaflet'
 import { createCustomerResource } from './resources/customer.resource'
 import { createShipmentResource } from './resources/shipment.resource'
+import { config } from '../conf'
 import path from 'path'
 
 const PORT = 3001
@@ -41,7 +42,7 @@ const start = async (): Promise<void> => {
 
   // This facilitates the connection to the mongo database
   try {
-    await mongoose.connect('mongodb://root:example@127.0.0.1:27017')
+    await mongoose.connect(config.mongoURI)
     console.log('Successfully connected to the DB')
   } catch (error) {
     console.log(error)
