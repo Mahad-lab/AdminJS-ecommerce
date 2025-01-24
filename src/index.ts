@@ -66,27 +66,26 @@ const start = async (): Promise<void> => {
   })
 
 
-  const secret = 'very_secret_secret'
-  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-    admin,
-    {
-      authenticate,
-      cookiePassword: 'very_secret_secret',
-    },
-    null,
-    {
-      resave: true,
-      saveUninitialized: true,
-      secret,
-    },
-  )
-
-  app.use(admin.options.rootPath, adminRouter)
-
-
-  // const adminRouter = AdminJSExpress.buildRouter(admin)
-
+  // TODO: authentication router
+  // const secret = 'very_secret_secret'
+  // const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  //   admin,
+  //   {
+  //     authenticate,
+  //     cookiePassword: 'very_secret_secret',
+  //   },
+  //   null,
+  //   {
+  //     resave: true,
+  //     saveUninitialized: true,
+  //     secret,
+  //   },
+  // )
   // app.use(admin.options.rootPath, adminRouter)
+
+  // TODO: no authentication router
+  const adminRouter = AdminJSExpress.buildRouter(admin)
+  app.use(admin.options.rootPath, adminRouter)
 
   app.listen(PORT, () => {
     console.log(`AdminJS started on http:/localhost:${PORT}${admin.options.rootPath}`)
