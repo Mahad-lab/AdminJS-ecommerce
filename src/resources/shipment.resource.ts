@@ -14,11 +14,11 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
   features: [],
   options: {
     listProperties: [
-      'id', 
+      'id',
       'shipper.name',
       'consignee.name',
-      'shipmentDetails.service',
-      'shipmentDetails.status',
+      'shipment.service',
+      'status',
     ],
     navigation: {
       icon: 'DeliveryParcel'
@@ -62,21 +62,122 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
           list: false
         }
       },
-      shipmentDetails: {
+      shipment: {
         isVisible: {
           edit: true,
           show: true,
           list: false
         }
       },
-      'shipmentDetails.status': {
+      status: {
         isVisible: {
           list: true,
           edit: false,
           show: true,
           filter: true,
         }
-      }
+      },
+      createdAt: {
+        isVisible: {
+          list: true,
+          edit: false,
+          show: true,
+          filter: false,
+        }
+      },
+      updatedAt: {
+        isVisible: {
+          list: true,
+          edit: false,
+          show: true,
+          filter: true,
+        }
+      },
+      'shipper.type': {
+        isVisible: {
+          list: true,
+          edit: true,
+          show: true,
+          filter: true
+        }
+      },
+      // https://github.com/SoftwareBrothers/adminjs/blob/master/src/backend/decorators/resource/resource-options.interface.ts
+      // 'shipper.companyName': {
+      //   isVisible: {
+      //     list: false,
+      //     edit: true,
+      //     show: true,
+      //     filter: true,
+      //   },
+      //   isRequired: true,
+      //   custom: {
+      //     condition: (record) => record?.params?.shipper?.type === 'company',
+      //   }
+      // },
+      // 'shipper.ntn': {
+      //   isVisible: {
+      //     list: false,
+      //     edit: true,
+      //     show: true,
+      //     filter: true,
+      //   },
+      //   isRequired: true,
+      //   custom: {
+      //     condition: (record) => record?.params?.shipper?.type === 'company',
+      //   }
+      // },
+      // 'shipper.shipperName': {
+      //   isVisible: {
+      //     list: false,
+      //     edit: true,
+      //     show: true,
+      //     filter: true,
+      //   },
+      //   isRequired: true,
+      //   custom: {
+      //     condition: (record) => record?.params?.shipper?.type === 'individual',
+      //   }
+      // },
+      // 'shipper.cnic': {
+      //   isVisible: {
+      //     list: false,
+      //     edit: true,
+      //     show: true,
+      //     filter: true,
+      //   },
+      //   isRequired: true,
+      //   custom: {
+      //     condition: (record) => record?.params?.shipper?.type === 'individual',
+      //   }
+      // },
+      "shipment.comments": {
+        type: 'textarea',
+        props: {
+          rows: 3,
+        },
+      },
+      "shipment.pieces": {
+        type: 'number',
+        // props: {
+        //   min: 1,
+        //   // type: 'number',
+        //   step: 1,
+        //   pattern: '[0-9]*',
+        //   onKeyPress: (e) => {
+        //     if (!/[0-9]/.test(e.key)) {
+        //       e.preventDefault();
+        //     } else {
+        //       e.preventDefault();
+        //     }
+        //   },
+        // },
+      },
+      "shipment.weight": {
+        type: 'number',
+      },
+      "shipment.totalVolumetricWeight": {
+        type: 'number',
+      },
     }
   }
 });

@@ -5,17 +5,33 @@ import { codes } from 'currency-codes';
 const countries = getNames();
 const currencies = codes();
 
-const status = [
-    "Shipment Created",
-    "Tracking Number Recieved",
-    "Shipment Picked Up",
-    "Shipment Arrived at Airport",
-    "Shipment is in Custom Clearence",
-    "Shipment is Departed",
-    "Shipment is in Clearance Process",
-    "Shipment Forwarded",
-    "Delivered"
-]
+// const status = [
+//     "Shipment Created",
+//     "Tracking Number Recieved",
+//     "Shipment Picked Up",
+//     "Shipment Arrived at Airport",
+//     "Shipment is in Custom Clearence",
+//     "Shipment is Departed",
+//     "Shipment is in Clearance Process",
+//     "Shipment Forwarded",
+//     "Delivered"
+// ]
+
+// Define the status object
+const ShipmentStatus = {
+    SHIPMENT_CREATED: "Shipment Created",
+    TRACKING_NUMBER_RECIEVED: "Tracking Number Recieved",
+    SHIPMENT_PICKED_UP: "Shipment Picked Up",
+    SHIPMENT_ARRIVED_AT_AIRPORT: "Shipment Arrived at Airport",
+    SHIPMENT_IS_IN_CUSTOM_CLEARENCE: "Shipment is in Custom Clearence",
+    SHIPMENT_IS_DEPARTED: "Shipment is Departed",
+    SHIPMENT_IS_IN_CLEARANCE_PROCESS: "Shipment is in Clearance Process",
+    SHIPMENT_FORWARDED: "Shipment Forwarded",
+    DELIVERED: "Delivered"
+} as const;
+
+// Create a type from the object values
+type ShipmentStatusType = typeof ShipmentStatus[keyof typeof ShipmentStatus];
 
 export enum ShipmentService {
     VIA_UK_UPS = 'Via UK ups',
@@ -43,12 +59,11 @@ export enum ShipmentService {
 
 export interface Shipment {
     id: Types.ObjectId;
+    status: ShipmentStatusType;
     shipper: {
         type: 'individual' | 'company';
-        companyName?: string;
-        ntn?: string;
-        shipperName?: string;
-        cnic?: string;
+        name: string;
+        ntn_or_cnic: string;
         email: string;
         phone: number;
         address: string;
@@ -66,7 +81,7 @@ export interface Shipment {
         country: typeof countries;
         postCode: string;
     };
-    shipmentDetails: {
+    shipment: {
         accountNo: string;
         shipmentType: 'Docs' | 'Non Docs (Flyer)' | 'Non Docs (Box)';
         pieces: number;
@@ -80,41 +95,48 @@ export interface Shipment {
         origin: typeof countries;
         destination: typeof countries;
         comments: string;
-        status: typeof status;
     };
 }
 
 export const ShipmentSchema = new Schema<Shipment>({
+    status: { 
+        type: String, 
+        required: true, 
+        enum: Object.values(ShipmentStatus),
+        default: ShipmentStatus.SHIPMENT_CREATED 
+    },
     shipper: new Schema({
         type: {
             type: String,
             enum: ['individual', 'company'],
             required: true
         },
-        companyName: {
+        name: {
             type: String,
-            required: function () {
-                return this.type === 'company';
-            }
+            required: true,
+            // required: function () {
+            //     return this.type === 'company';
+            // }
         },
-        ntn: {
+        ntn_or_cnic: {
             type: String,
-            required: function () {
-                return this.type === 'company';
-            }
+            required: true,
+            // required: function () {
+            //     return this.type === 'company';
+            // }
         },
-        shipperName: {
-            type: String,
-            required: function () {
-                return this.type === 'individual';
-            }
-        },
-        cnic: {
-            type: String,
-            required: function () {
-                return this.type === 'individual';
-            }
-        },
+        // shipperName: {
+        //     type: String,
+        //     required: function () {
+        //         return this.type === 'individual';
+        //     }
+        // },
+        // cnic: {
+        //     type: String,
+        //     required: function () {
+        //         return this.type === 'individual';
+        //     }
+        // },
         email: { type: String, required: true },
         phone: { type: Number, required: true },
         address: { type: String, required: true },
@@ -132,7 +154,7 @@ export const ShipmentSchema = new Schema<Shipment>({
         phone: { type: Number, required: true },
         email: { type: String, required: true },
     }),
-    shipmentDetails: new Schema({
+    shipment: new Schema({
         accountNo: { type: String, required: true },
         shipmentType: {
             type: String,
@@ -154,8 +176,7 @@ export const ShipmentSchema = new Schema<Shipment>({
         origin: { type: String, required: true, enum: countries },
         destination: { type: String, required: true, enum: countries },
         comments: { type: String },
-        status: { type: String, required: true, enum: status, default: status[0] }
-    })
+    }),
 }, { timestamps: true });
 
 
