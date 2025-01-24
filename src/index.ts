@@ -5,6 +5,7 @@ import { Database, Resource } from '@adminjs/mongoose'
 import mongoose from 'mongoose'
 import { getLeafletDist } from '@adminjs/leaflet'
 import { createCustomerResource } from './resources/customer.resource'
+import { createShipmentResource } from './resources/shipment.resource'
 import path from 'path'
 
 const PORT = 3001
@@ -20,6 +21,16 @@ export const componentLoader = new ComponentLoader()
 export const Components = {
   PDFGenerator: componentLoader.add('GeneratePDF', './custom_components/pdfgenerator.component')
 }
+
+const DEFAULT_ADMIN = {
+  email: 'admin@example.com',
+  password: 'password',
+}
+
+const authenticate = async () => {
+  return { email: DEFAULT_ADMIN.email }
+}
+
 
 const start = async (): Promise<void> => {
   const app = express()
@@ -44,7 +55,8 @@ const start = async (): Promise<void> => {
       withMadeWithLove: false
     },
     resources: [
-      createCustomerResource()
+      createShipmentResource(),
+      createCustomerResource(),
     ],
     componentLoader,
     assets: {
@@ -52,9 +64,28 @@ const start = async (): Promise<void> => {
     }
   })
 
-  const adminRouter = AdminJSExpress.buildRouter(admin)
+
+  const secret = 'very_secret_secret'
+  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    admin,
+    {
+      authenticate,
+      cookiePassword: 'very_secret_secret',
+    },
+    null,
+    {
+      resave: true,
+      saveUninitialized: true,
+      secret,
+    },
+  )
 
   app.use(admin.options.rootPath, adminRouter)
+
+
+  // const adminRouter = AdminJSExpress.buildRouter(admin)
+
+  // app.use(admin.options.rootPath, adminRouter)
 
   app.listen(PORT, () => {
     console.log(`AdminJS started on http:/localhost:${PORT}${admin.options.rootPath}`)

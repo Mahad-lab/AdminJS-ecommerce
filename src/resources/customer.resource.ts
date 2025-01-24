@@ -1,7 +1,7 @@
 import { CustomerModel } from '../models/customer.model'
-import leafletFeatures from '@adminjs/leaflet'
+// import leafletFeatures from '@adminjs/leaflet'
 import { componentLoader, Components } from '../index'
-import { geocode } from '../custom_components/geocoding.component'
+// import { geocode } from '../custom_components/geocoding.component'
 import pdfGenerator from '../custom_components/pdfgenerator'
 import { ResourceOptions, FeatureType } from 'adminjs'
 
@@ -14,18 +14,18 @@ interface CreateResourceResult<T> {
 export const createCustomerResource = (): CreateResourceResult<typeof CustomerModel> => ({
   resource: CustomerModel,
   features: [
-    leafletFeatures.leafletSingleMarkerMapFeature({
-      componentLoader,
-      paths: {
-        mapProperty: 'location',
-        latitudeProperty: 'latitude',
-        longitudeProperty: 'longtitude'
-      },
-      mapProps: {
-        center: [50.04, 10.06],
-        zoom: 4
-      }
-    })
+    // leafletFeatures.leafletSingleMarkerMapFeature({
+    //   componentLoader,
+    //   paths: {
+    //     mapProperty: 'location',
+    //     latitudeProperty: 'latitude',
+    //     longitudeProperty: 'longtitude'
+    //   },
+    //   mapProps: {
+    //     center: [50.04, 10.06],
+    //     zoom: 4
+    //   }
+    // })
   ],
   options: {
     navigation: {
@@ -33,12 +33,12 @@ export const createCustomerResource = (): CreateResourceResult<typeof CustomerMo
       icon: 'Events'
     },
     actions: {
-      new: {
-        after: [geocode]
-      },
-      edit: {
-        after: [geocode]
-      },
+      // new: {
+      //   after: [geocode]
+      // },
+      // edit: {
+      //   after: [geocode]
+      // },
       PDFGenerator: {
         actionType: 'record',
         icon: 'GeneratePdf',
@@ -53,7 +53,10 @@ export const createCustomerResource = (): CreateResourceResult<typeof CustomerMo
       }
     },
     properties: {
-      longtitude: {
+      // longtitude: {
+      //   isVisible: false
+      // },
+      address: {
         isVisible: false
       },
       latitude: {
