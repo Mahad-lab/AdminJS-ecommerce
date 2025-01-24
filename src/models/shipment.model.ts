@@ -2,32 +2,28 @@ import { model, Schema, Types } from 'mongoose'
 
 export interface Shipment {
     id: Types.ObjectId;
-    shipperInfo: {
+    shipper: {
+        type: 'individual' | 'company';
         companyName?: string;
         ntn?: string;
         shipperName?: string;
         cnic?: string;
-        shipperEmail: string;
+        email: string;
         phone: number;
         address: string;
         city: string;
         country: string;
         postCode: string;
     };
-    consigneeInfo: {
+    consignee: {
         name: string;
-        address: {
-            street: string;
-            buildingNumber: string;
-            apartamentNumber: string;
-            city: string;
-            postCode: string;
-            country: string;
-        };
-        phone: number;
         email: string;
-        // latitude: string;
-        // longtitude: string;
+        phone: number;
+        addressLine: string;
+        addressLine2: string;
+        city: string;
+        country: string;
+        postCode: string;
     };
     shipmentDetails: {
         weight: number;
