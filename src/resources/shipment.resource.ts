@@ -21,7 +21,6 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
       'shipmentDetails.status',
     ],
     navigation: {
-      name: 'Shipments',
       icon: 'DeliveryParcel'
     },
     actions: {
