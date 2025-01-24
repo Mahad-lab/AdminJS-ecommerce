@@ -13,9 +13,16 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
   resource: ShipmentModel,
   features: [],
   options: {
+    listProperties: [
+      'id', 
+      'shipper.name',
+      'consignee.name',
+      'shipmentDetails.service',
+      'shipmentDetails.status',
+    ],
     navigation: {
       name: 'Shipments',
-      icon: 'LocalShipping'
+      icon: 'DeliveryParcel'
     },
     actions: {
       // new: {
@@ -39,16 +46,17 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
     },
     properties: {
       id: {
+        isTitle: true,
         isVisible: false
       },
-      shipperInfo: {
+      shipper: {
         isVisible: {
           edit: true,
           show: true,
           list: false
         }
       },
-      recipientInfo: {
+      consignee: {
         isVisible: {
           edit: true,
           show: true,
@@ -60,6 +68,14 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
           edit: true,
           show: true,
           list: false
+        }
+      },
+      'shipmentDetails.status': {
+        isVisible: {
+          list: true,
+          edit: false,
+          show: true,
+          filter: true,
         }
       }
     }
