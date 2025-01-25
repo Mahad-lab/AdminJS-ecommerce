@@ -1,3 +1,9 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+
+console.log(process.env.MONGO_URI)
 export const config = {
-    mongoURI: 'mongodb://127.0.0.1:27956',
+    mongoURI: process.env.MONGO_URI,
 }
