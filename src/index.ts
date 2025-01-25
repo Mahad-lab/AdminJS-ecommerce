@@ -34,22 +34,25 @@ const authenticate = async () => {
   return { email: DEFAULT_ADMIN.email }
 }
 
+// Create and configure Express app
+const app = express()
 
-const start = async (): Promise<void> => {
-  const app = express()
+app.use(express.static(getLeafletDist()))
+app.use(express.static(path.join(__dirname, 'pdfs/')))
+app.use(express.static(path.join(__dirname, 'public/')))
 
-  app.use(express.static(getLeafletDist()))
-  app.use(express.static(path.join(__dirname, 'pdfs/')))
-  app.use(express.static(path.join(__dirname, 'public/')))
-
-  // This facilitates the connection to the mongo database
+// Database connection function
+const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI)
     console.log('Successfully connected to the DB')
   } catch (error) {
     console.log(error)
   }
+}
 
+// Initialize AdminJS
+const initAdminJS = async () => {
   const admin = new AdminJS({
     rootPath: '/admin',
     branding: {
@@ -88,10 +91,25 @@ const start = async (): Promise<void> => {
   // TODO: no authentication router
   const adminRouter = AdminJSExpress.buildRouter(admin)
   app.use(admin.options.rootPath, adminRouter)
-
-  app.listen(PORT, () => {
-    console.log(`AdminJS started on http:/localhost:${PORT}${admin.options.rootPath}`)
-  })
+  return admin
 }
 
-start()
+// Start server function
+const start = async () => {
+  await connectDB()
+  const admin = await initAdminJS()
+  
+  if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+      console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
+    })
+  }
+}
+
+// Export the configured app for Vercel
+export default app
+
+// Start the server if running directly
+if (require.main === module) {
+  start()
+}
