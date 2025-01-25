@@ -30,17 +30,46 @@ export const createShipmentResource = (): CreateResourceResult<typeof ShipmentMo
       // edit: {
       //   after: [geocode]
       // },
-      PDFGenerator: {
+
+      // PDFGenerator: {
+      //   actionType: 'record',
+      //   icon: 'GeneratePdf',
+      //   component: Components.PDFGenerator,
+      //   handler: (request, response, context) => {
+      //     const { record, currentAdmin } = context;
+      //     return {
+      //       record: record.toJSON(currentAdmin),
+      //       url: pdfGenerator(record.toJSON(currentAdmin))
+      //     };
+      //   }
+      // },
+      
+      createInvoice: {
         actionType: 'record',
-        icon: 'GeneratePdf',
-        component: Components.PDFGenerator,
-        handler: (request, response, context) => {
+        icon: 'Receipt',
+        component: Components.InvoiceForm,
+        handler: async (request, response, context) => {
+          // console.log("🚀 ~ handler: ~ request:", request)
           const { record, currentAdmin } = context;
+          // console.log("🚀 ~ handler: ~ currentAdmin:", currentAdmin)
+          // console.log("🚀 ~ handler: ~ record:", record)
+          const { invoiceNumber, date, dueDate, amount, notes } = request.payload;
+          // console.log("🚀 ~ handler: ~ request.payload:", request.payload)
+
+          // Here you would typically save the invoice to your database
+          // For now, we'll just return the data
           return {
             record: record.toJSON(currentAdmin),
-            url: pdfGenerator(record.toJSON(currentAdmin))
+            invoiceData: {
+              invoiceNumber,
+              date,
+              dueDate,
+              amount,
+              notes
+            }
           };
         }
+
       }
     },
     properties: {
