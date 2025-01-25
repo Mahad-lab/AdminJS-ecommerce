@@ -20,7 +20,8 @@ AdminJS.registerAdapter({
 export const componentLoader = new ComponentLoader()
 
 export const Components = {
-  PDFGenerator: componentLoader.add('GeneratePDF', './custom_components/pdfgenerator.component')
+  PDFGenerator: componentLoader.add('GeneratePDF', './custom_components/pdfgenerator.component'),
+  InvoiceForm: componentLoader.add('InvoiceForm', './custom_components/invoice.form.component'),
 }
 
 const DEFAULT_ADMIN = {
@@ -57,7 +58,7 @@ const start = async (): Promise<void> => {
     },
     resources: [
       createShipmentResource(),
-      createCustomerResource(),
+      // createCustomerResource(),
     ],
     componentLoader,
     assets: {
