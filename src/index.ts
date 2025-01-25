@@ -6,10 +6,11 @@ import mongoose from 'mongoose'
 import { getLeafletDist } from '@adminjs/leaflet'
 import { createCustomerResource } from './resources/customer.resource'
 import { createShipmentResource } from './resources/shipment.resource'
-import { config } from '../conf'
 import path from 'path'
-
+import dotenv from 'dotenv'
 const PORT = 3001
+
+dotenv.config()
 
 // We'll need to register the mongoose Adapter
 AdminJS.registerAdapter({
@@ -43,7 +44,7 @@ const start = async (): Promise<void> => {
 
   // This facilitates the connection to the mongo database
   try {
-    await mongoose.connect(config.mongoURI)
+    await mongoose.connect(process.env.MONGO_URI)
     console.log('Successfully connected to the DB')
   } catch (error) {
     console.log(error)
