@@ -39,18 +39,18 @@ export const createCustomerResource = (): CreateResourceResult<typeof CustomerMo
       // edit: {
       //   after: [geocode]
       // },
-      PDFGenerator: {
-        actionType: 'record',
-        icon: 'GeneratePdf',
-        component: Components.PDFGenerator,
-        handler: (request, response, context) => {
-          const { record, currentAdmin } = context
-          return {
-            record: record.toJSON(currentAdmin),
-            url: pdfGenerator(record.toJSON(currentAdmin))
-          }
-        }
-      }
+      // PDFGenerator: {
+      //   actionType: 'record',
+      //   icon: 'GeneratePdf',
+      //   component: Components.PDFGenerator,
+      //   handler: (request, response, context) => {
+      //     const { record, currentAdmin } = context
+      //     return {
+      //       record: record.toJSON(currentAdmin),
+      //       url: pdfGenerator(record.toJSON(currentAdmin))
+      //     }
+      //   }
+      // }
     },
     properties: {
       // longtitude: {
